@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2022 by anonymous (http://jsbin.com/zipecalali/3/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex" />
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>JS Bin</title>
+  </head>
+  <body>
+    <h1>Closure Counter Demo</h1>
+    <p>
+      Count:
+      <span id="count"></span>
+    </p>
+    <button id="increment">+1</button>
+    <button id="decrement">-1</button>
+
+    <footer>
+      <p>Good tutorials on the topics</p>
+      <ul>
+        <li>
+          <a href="https://www.toolsqa.com/javascript/closures-in-javascript/"
+            >Closures in JS</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://medium.com/@ian_grubb/first-class-functions-in-javascript-fe6caf61d179"
+            >First class functions in JS</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#Lexical_this"
+            >Arrow functions in JS MDN Docs</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://medium.com/launch-school/javascript-weekly-an-introduction-to-first-class-functions-9d069e6fb137#:~:text=First-class%20functions%20are%20a%20vital%20part%20of%20the,fact%2C%20JavaScript%20functions%20are%20themselves%20types%20of%20objects.?msclkid=e3672d5bb18311eca98c9fc37744686f"
+            >First class functions in JS Medium</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://medium.com/swlh/javascript-arrow-functions-vs-regular-functions-5ec4a9076796"
+            >Arrow functions vs Normal functions</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://stackoverflow.com/questions/28371982/what-does-this-refer-to-in-arrow-functions-in-es6"
+            >'this' in Arrow function Stackoverflow</a
+          >
+        </li>
+      </ul>
+    </footer>
+    <script id="jsbin-javascript">
+      // ---Closures---
+      // Tutorial : https://www.toolsqa.com/javascript/closures-in-javascript/
+      const CounterFactory = function () {
+        let counter = 0;
+        //     const increment = () => {counter++;};
+        //     const  decrement = () => {counter--;};
+
+        return {
+          getCount: () => counter,
+          increment: () => {
+            counter++;
+          },
+          decrement: () => {
+            counter--;
+          },
+        };
+      };
+
+      // const counter = CounterFactory();
+      // console.log(counter);
+      // counter.increment();
+      // counter.increment();
+      // counter.increment();
+      // console.log(counter.getCount());
+      // counter.decrement();
+      // counter.decrement();
+      // counter.decrement();
+      // console.log(counter.getCount());
+
+      // ---Callbacks----
+
+      function x(y) {
+        console.log("X");
+        console.log(y);
+      }
+      function y() {
+        console.log("Y");
+      }
+      // x(y());
+
+      // ---Callback Coding---
+      /*
+Implement a counter with increment & decrement
+functionality. Avoid using Global variables.
+
+Hint: try using closures.
+*/
+
+      function start() {
+        let counter = 0;
+
+        const display = document.getElementById("count");
+        const incrementBtn = document.getElementById("increment");
+        const decrementBtn = document.getElementById("decrement");
+
+        display.textContent = counter;
+
+        function increment() {
+          counter++;
+          display.textContent = counter;
+        }
+
+        function decrement() {
+          counter--;
+          display.textContent = counter;
+        }
+
+        incrementBtn.addEventListener("click", increment);
+
+        decrementBtn.addEventListener("click", decrement);
+      }
+
+      // start();
+
+      // Demonstrating Callback Queue & Main Thread Blocking in JS
+
+      function blocking() {
+        console.log("Start");
+
+        setTimeout(() => {
+          console.log("setTimeout Callback func");
+        }, 1000);
+
+        console.log("End");
+
+        //Blocking the Main Thread
+        console.log("Started Blocking the Main Thread");
+        let startDt = Date.now();
+        let endDt = Date.now();
+
+        // till the endDt is 10s from the start time
+        // the loop keeps running on the main thread i.e. on the callstack
+        while (endDt < startDt + 10000) {
+          endDt = Date.now();
+        }
+        console.log("Ended Blocking the Main Thread");
+      }
+
+      // blocking()
+
+      function functionsDemo() {
+        /* First class functions: 
+    First class objects are called first class citizens. These objects 
+    have the following properties: 
+    > Be stored in a variable;
+    > Be passed as arguments to functions;
+    > Be returned by functions;
+    > Be stored in some data structure; and,
+    > Hold their own properties and methods.
+    Functions have all these properties and hence are called so.
+*/
+
+        function blocker(holdFor) {
+          let startTime = Date.now();
+          let endTime = Date.now();
+          while (endTime < startTime + holdFor) {
+            endTime = Date.now();
+          }
+        }
+
+        // Eg:
+        function greet(user) {
+          console.log("Welcome! " + user);
+          //block function for main thread
+          blocker(2000);
+        }
+
+        const greetCopy = greet; // functions stored in a variable
+
+        /* Higher order function:
+timer is a higher order function that takes a callback function and returns
+another function with additional function added to it.
+*/
+
+        function timerFactory(callbackFunc) {
+          return function (...args) {
+            const startTime = Date.now();
+            callbackFunc(...args);
+            const timeElapsed = (Date.now() - startTime) / 1000;
+            console.log(
+              `[INFO] function '${callbackFunc.name}' took ${timeElapsed}s`
+            );
+          };
+        }
+
+        const timedGreet = timerFactory(greetCopy);
+
+        // timedGreet("SDE Mayukh");
+
+        /*
+  Function statement are hoisted where as function expression are not.
+  Hence, function statements can be called before they are initialised
+  but function expressions cannot. 
+*/
+
+        // Function Declaration/Statement:
+        func(); // this is allowed
+
+        function func() {
+          console.log("Function statement called");
+        }
+
+        // Function Expression:
+        // func2(); // this is not and will throw a Error. cannot call func2 before initialisation
+
+        const /* ||let||var */ func2 = function () {
+            console.log("Function expression called");
+          };
+
+        //Anonymous functions
+        /* the following will give an error as 'SyntaxError: Function statements require a function name'
+function (){ 
+  console.log("Anonymous funtion");
+}
+*/
+
+        //Named anonymous function. xyz is created as a local variable & the
+        //outer function doesnot has access to this function.
+        const abc = function xyz() {
+          console.log("Named anonymous function");
+          // these have access to their function
+          console.log(xyz);
+        };
+
+        abc(); // this is allowed
+        // xyz(); // this is not
+      }
+
+      // functionsDemo();
+
+      function arrowFunctions() {
+        // Arrow functions vs. Normal Functions
+
+        /*
+      Arrow functions donot have their own 'this' binding and bind the 
+      'this' scope to the lexical environment. This means arrow functions
+      bind 'this' to the scope in which they are defined. 
+      Where as in,
+      Normal functions the binding of 'this' is derived from the context
+      in which they are called. Examples follow to illustrate this.
+      Hence, arrow functions are not suitable for methods.
+    */
+
+        const obj = {
+          offset: 10,
+          getOffsetArrow: (val) => {
+            //       console.log( this, this.offset);
+            return this.offset + val;
+          },
+          getOffsetNormal: function (val) {
+            //       console.log(this, this.offset);
+            return this.offset + val;
+          },
+        };
+
+        /* as arrow function dont have their own 'this' binding, the 'this'
+   inside the function points to the lexical scope i.e. the 'window'
+   object in this case. As offset is not defined in the window object
+   hence we get 'NaN' as result.*/
+        console.log("Arrow function result : ", obj.getOffsetArrow(20));
+
+        /* as normal functions get their 'this' binding from the context
+   in which they are called, thus as the 'getOffsetNormal' is called
+   on the 'obj' object, so the 'offset' refers to the offset of the
+   object.*/
+        console.log("Normal function result : ", obj.getOffsetNormal(20));
+
+        // 'call', 'apply', 'bind' methods & arrow functions don't go hand in hand
+
+        const objToBind = {
+          name: "Person Object",
+        };
+
+        window.name = "Window Object";
+
+        /*
+   with normal functions as the scope is defined by the context
+   'call', 'apply', 'bind' methods work as expected.
+  */
+        function logger(x, y) {
+          console.log(this.name, x, y);
+        }
+
+        logger.call(objToBind, 1, 2);
+        logger.apply(objToBind, [3, 4]);
+
+        const boundLogger = logger.bind(objToBind);
+        boundLogger(5, 6);
+
+        /* 
+   with arrow functions as the 'this' is bound to the lexical scope,
+   thus the 'name' property is refering to the outer scope's 'name'
+   variable i.e. the window object in this case. And as we've defined
+   'name' on the window object earlier, hence that is used here.
+  */
+        const arrowLogger = (x, y) => {
+          console.log(this.name, x, y);
+        };
+
+        arrowLogger.call(objToBind, 1, 2);
+        arrowLogger.apply(objToBind, [3, 4]);
+
+        const boundLoggerArrow = arrowLogger.bind(objToBind);
+        boundLoggerArrow(5, 6);
+
+        //Normal functions & setTimeout
+
+        const mockService_Broken = {
+          data: 10,
+          getData: function () {
+            setTimeout(function () {
+              console.log("Response : " + this.data);
+            }, 2000);
+          },
+        };
+        /*
+    Normal function bind their 'this' to the context in which they are called.
+    As timeouts are called in the global/window context, thus as 'data' is not
+    defined in global/window object, hence we get undefined.
+  */
+        mockService_Broken.getData();
+
+        //Arrow functions & setTimeout
+        const mockService_Ok = {
+          data: 10,
+          getData: function () {
+            setTimeout(() => {
+              console.log("Response : " + this.data);
+            }, 2000);
+          },
+        };
+        /*
+    Arrow function bind their 'this' to lexical environment in which they  
+    are declared(window/global object if there's not any) irrespective of 
+    the calling context. Thus, even if the setTimeout callback is called 
+    in the window context, the 'this' is bound to the context in which
+    they are declared. Thus, 'this.data' references the 'data' property
+    of the 'mockService_Ok' object
+  */
+        mockService_Ok.getData();
+      }
+
+      // arrowFunctions();
+    </script>
+  </body>
+</html>

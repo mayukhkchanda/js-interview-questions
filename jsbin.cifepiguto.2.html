@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2022 by anonymous (http://jsbin.com/cifepiguto/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+<style id="jsbin-css">
+body{
+  font-family : helvetica;
+}
+</style>
+</head>
+<body>
+<h2>Debouncing & Throttling</h2>
+  <p>
+    This demo show the <strong>Debouncing</strong> & <strong>Throttling</strong> effect.
+    <br>
+    Read more about these in this <a href="https://www.telerik.com/blogs/debouncing-and-throttling-in-javascript?msclkid=8d066004aff011ecbf83bb0fd308abd4" target="_blank">Tutorial blog</a>
+    
+    <br>
+     <small>Used the <strong><i>resize</i></strong> event listener for demo</small>
+    <br>
+    <br>
+      Click on the buttons bellow for a demo of each of the effect.
+  </p>
+  <button id="debounce-demo">Debounce</button>
+  <button id="throttle-demo">Throttle</button>
+  <button id="reset">Reset</button>
+  <br>
+  <div id="mount"></div>
+<script id="jsbin-javascript">
+const debounceBtn = document.getElementById("debounce-demo");
+const throttleBtn = document.getElementById("throttle-demo");
+const resetBtn = document.getElementById("reset");
+const root = document.getElementById("mount");
+
+let listener;
+
+
+const setup = (demoName) => {
+  const info = document.createElement("p");
+  info.textContent = "Start resizing the window/output to see the effect.";
+  
+  const countDisplay = document.createElement("p");
+  countDisplay.innerHTML = 'Count without '+demoName+': <span id="count"></span>';
+  
+  const debounceCountDisplay = document.createElement("p");
+  debounceCountDisplay.innerHTML = 'Count with '+demoName+': <span id="count-'+demoName+'"></span>';
+  
+  root.appendChild(info);
+  root.appendChild(countDisplay);
+  root.appendChild(debounceCountDisplay);
+  
+}
+
+const debounce = () => {
+  
+  console.log("Started debounce demo...")
+  
+  const demoName = "debounce";
+  setup(demoName);
+  
+  const count = document.getElementById("count");
+  const debouncedCount = document.getElementById("count-"+demoName);
+    
+  let counter = 0;
+  let debouncedCounter = 0;
+  count.textContent = counter;
+  debouncedCount.textContent =debouncedCounter;
+  
+  
+  // create a timeoutId which will be used to check if any
+  // timmer is currently running or not
+  let timeoutId;
+  
+  listener = () => {
+    
+    console.log("resize event occured");
+    
+    counter++;
+    count.textContent = counter;
+    
+    // if there's a timeout id present then, that means there's already
+    // a timmmer running and we need to cancel that timmer and start a 
+    // new one
+    if(timeoutId){
+      clearTimeout(timeoutId);
+    }
+    
+    // get the timeout id from setTimeout. Note that because of closure
+    // and lexical scoping, the reference to the timeoutId variable is 
+    // always the same and hence can be re-initialised again & again
+    timeoutId = setTimeout(function(){
+        debouncedCounter++;
+        debouncedCount.textContent = debouncedCounter;
+    }, 200);
+    
+    
+  };
+  
+  window.addEventListener("resize", listener);
+}
+
+const throttle = () =>{
+  console.log("Started Throttle demo");
+  
+  const demoName = "throttle";
+  
+  setup(demoName);
+  
+  const countDisplay = document.getElementById("count");
+  const throttledCountDisplay = document.getElementById("count-"+demoName);
+  
+  let counter = 0;
+  let throttledCounter = 0;
+  
+  countDisplay.textContent = counter;
+  throttledCountDisplay.textContent = throttledCounter;
+  
+  let timeoutId;
+  
+  listener = () => {
+    counter++;
+    countDisplay.textContent = counter;
+    
+    if(timeoutId) return;
+    
+    timeoutId = setTimeout(()=>{
+      timeoutId = undefined;
+      throttledCounter++;
+      throttledCountDisplay.textContent = throttledCounter;
+    }, 200); 
+  };
+  
+  window.addEventListener("resize", listener);
+  
+}
+
+
+
+debounceBtn.addEventListener("click", debounce);
+throttleBtn.addEventListener("click", throttle);
+
+resetBtn.addEventListener("click", ()=>{
+  if(listener){
+    window.removeEventListener("resize", listener);
+  }
+  root.innerHTML = "";
+})
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,901 @@
+<meta name="robots" content="noindex" />
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="index.css" />
+    <title>Common JS Interview Questions</title>
+  </head>
+  <body>
+    <header>
+      <h1>JavaScript Interview questions and Implementation</h1>
+      <p>
+        I've tried implementing a few famous JavaScript interview questions
+        along with the resources to learn and a demo with code.
+      </p>
+    </header>
+
+    <main>
+      <section id="closures">
+        <h2>
+          <a href="#closures">#</a>
+          Closures
+        </h2>
+        <div>
+
+        <p>
+          Closures are functions that have access to their lexical environment.
+          <br />
+          Read more about closures in this
+          <a href="https://www.toolsqa.com/javascript/closures-in-javascript/"
+            >tutorial</a
+          >
+        </p>
+        <p>
+          <code>
+            <pre>
+            const CounterFactory = function() {
+              let counter = 0;
+              return {
+                getCount : () => counter,
+                increment : () => {counter++;},
+                decrement : () => {counter--;},
+              }
+            }
+            const counter = CounterFactory();
+            console.log(counter); 
+          </pre
+            >
+          </code>
+          Here the object returned has functions that form closures with the
+          reference to <code>counter</code> variable. Thus, whenever we call
+          <code>increment</code> or <code>decrement</code> the
+          <code>counter</code> variable's value is changed as it is referenced
+          by position.
+          <br />
+          Below is a demo of the same.
+          <br>
+          <p>
+            The below demo could also be asked as an interview question as <em>Implement a counter with increment & decrement
+functionality. Avoid using Global variables.</em>
+
+          </p>
+        </p>
+        <div>
+          <button id="closure-start">Start Demo</button>
+          <p>
+            Count:
+            <span id="count"></span>
+          </p>
+          <button id="increment">+1</button>
+          <button id="decrement">-1</button>
+          <script src="closureCounter.js"></script>
+        </div>
+        </div>
+
+      </section>
+
+      <section id="callback-functions">
+        <h2>
+          <a href="#callback-functions">#</a>
+          Callback functions
+        </h2>
+        <div>
+
+        <p>
+          Functions passed as arguments to other functions are called callback
+          functions
+        </p>
+        <p>
+          <code>
+            <pre>
+            function x(y){
+              console.log("X");
+              y();
+            }
+            function y(){
+              console.log("Y");
+            }
+            x(y);
+          </pre
+            >
+          </code>
+          Calling <code>x(y)</code> would log <code>X</code> and
+          <code>Y</code> to the console.
+          <br />
+          Here, <code>y</code> is a callback function that is passed to
+          <code>x</code> as an argument.
+          <br />
+        </p>
+        <div>
+          <p>
+            Clicking on the button below would call x(y). Check the console to
+            see the log.
+          </p>
+          <button id="callback-invoke">x(y)</button>
+          <script src="callback.js"></script>
+        </div>
+        </div>
+
+      </section>
+
+      <section id="callback-queue-and-main-thread-blocking">
+        <h2>
+          <a href="#callback-queue-and-main-thread-blocking">#</a>
+          Callback Queue & Main thread blocking
+        </h2>
+        <div>
+        <p>
+
+        Callback functions can only be executed by the Javascript runtime engine when they are pushed in the call stack. 
+        <br>
+        <br>
+        <br> But they cannot be directly moved to the call stack. Instead, they are pushed to the callback queue after the 
+        <br> timeout expiers(in case <code>setTimeout</code>). A program called the event loop continously keeps track of the 
+        <br> callback queue and if there are any callback functions in the callback queue. It pushes the first one into the 
+        <br> call stack <strong><em>only if the call stack is empty</em></strong>. 
+        <br>
+        <br>
+        If the callstack is not empty, the event loop would wait for the callstack to be empty and only then push the callback function into the call stack.
+        <br>
+        <br>
+        But there's another type of queue called the microtask queue which has higher priority than callback queue.
+        All functions coming through promises and mutation observer are pushed into the callback queue.
+        <br>
+        <br>
+        This means functions into the microtask queue will always get higher priority even if there's function present in the callback queue.
+
+        </p>
+
+        <p>
+
+          <code>
+            <pre>
+
+              function blocking() {
+                console.log("Start");
+                
+                setTimeout(() => {
+                  console.log("I was supposed to be called after 1s.")
+                  console.log("setTimeout Callback func");
+                }, 1000);
+                
+                console.log("End");
+                
+                //Blocking the Main Thread
+                console.log("Started Blocking the Main Thread");
+                let startDt = Date.now();
+                let endDt = Date.now();
+                
+                // till the endDt is 10s from the start time
+                // the loop keeps running on the main thread i.e. on the callstack
+                while (endDt < startDt + 10000) {
+                  endDt = Date.now();
+                }
+                console.log("Successfully blocked the main thread for 10 seconds");
+                console.log("Ended Blocking the Main Thread");
+              }
+            </pre>
+          </code>
+
+          <br> After calling the function, a timeout is registered to be executed after 1 second.
+          <br> But we are runing a <code>while</code> loop on the main thread for 10s.  Thus,
+          <br> after 1 second the callback function is pushed to the callback queue.  But the 
+          <br> event loop is unable to push the callback function to the call stack and the
+          <br> callback function is executed after 10 seconds once the call stack is empty.
+        </div>
+          
+        </p>
+
+        <div>
+          <button id="blocking-start">Click Here</button> to to run the above code and see the result in the console.
+          <script src="blocking.js"></script> 
+        </div>
+      </section>
+
+      <section id="functions-as-first-class-citizen">
+        <h2>
+          <a href="#functions-as-first-class-citizen">#</a>
+          First Class Functions
+        </h2>
+        <p>
+          <pre style="font-size: 1.175em;">
+        First class objects are called first class citizens. These objects have the following properties: 
+          > Be stored in a variable;
+          > Be passed as arguments to functions;
+          > Be returned by functions;
+          > Be stored in some data structure; and,
+          > Hold their own properties and methods.
+        Functions have all these properties and hence are called First class functions.
+        Below are demos of the same.
+          </pre>
+        </p>
+
+        <ul>
+
+          <li id="function-declaration">
+            <h3>
+              <a href="#function-declaration">#</a>
+              Function Declaration/Statement
+            </h3>
+            <p>
+
+              <code>
+                <pre>
+                  function greet(user) { //function declaration
+                    window.alert("Welcome! " + user);
+                  }
+                </pre>
+              </code>
+              <br>
+              These function can also be store in variable.
+
+              <code>
+                <pre>
+                  const greetVar = greet; // using functions as variables
+                </pre>
+              </code>
+              <em>Note that the function's reference is store in the <strong><code>greetVar</code></strong> variable</em>
+            </p>
+            
+            <div>
+              <input type="text" id="function-declaration-input">
+              <button id="function-declaration-call">
+                greet()
+              </button>
+              <button id="function-variable-call">
+                greetVar()
+              </button>
+            </div>
+          </li>
+
+          <li id="functions-expression">
+            <h3>
+              <a href="#functions-expression">#</a>
+              Function Expression
+            </h3>
+            <code>
+              <pre>
+                const greetFuncVar = function (user) {
+                  window.alert("Welcome! " + user);
+                }
+              </pre>
+            </code>
+           
+            <div>
+
+              <strong>Function Statement/Declaration vs Expression</strong>
+              <p>
+                <em>Function statement</em> are hoisted where as <em>function expression</em> are not.
+                <br>
+                Hence, <em>function statements</em> can be called before they are initialised
+                but <em> function expressions</em> cannot. 
+              </p>
+              <code>
+                <pre>
+
+                  // Function Declaration/Statement:
+                  func(); // this is allowed
+                  
+                  function func() {
+                    console.log("Function statement called");
+                  }
+                  
+                  // Function Expression:
+                  // func2(); // this is not and will throw a Error. cannot call func2 before initialisation
+                  
+                  const /* ||let||var */ func2 = function () {
+                    console.log("Function expression called");
+                  };
+                </pre>
+              </code>
+            </div>
+          </li>
+
+          <li id="anonymous-functions">
+            <h3>
+              <a href="#anonymous-functions">#</a>
+              Anonymous Functions
+            </h3>
+            <p>
+              <code>
+                <pre>
+                  function (){ // unamed Anonymous  function 
+                    console.log("Anonymous funtion");
+                  }
+                </pre>
+              </code>
+              
+              <br>
+              <strong>Note,</strong>
+              The above code as is will give a <em>SyntaxError</em> as <em>
+                Function statements require a function name
+              </em>
+              <br>
+              <br>
+              Anonymous can be named or unamed.
+              <br>
+              Below is an example of <strong><em>Named Anonymous function</em></strong>.
+              <br>
+
+              <code>
+                <pre>
+                  //Named anonymous function. xyz is created as a local variable 
+                  //and the is accessible inside the xyz function scope
+                  
+                  const abc = function xyz() {
+                    console.log("Named anonymous function");
+                    // these have access to their function
+                    console.log(xyz);
+                  };
+                  
+                  abc(); // this is allowed
+
+                  //outer function doesnot has access to this function.
+                  // xyz(); // hence this is not allowed
+                </pre>
+              </code>
+
+            </p>
+          </li>
+
+          <li id="higher-order-functions">
+            <h3>
+              <a href="#higher-order-functions">#</a>
+              Higher order function
+            </h3>
+            <p>
+              Higher order functions are functions that accept anothe function as argument and perform additional operations on it.
+              <br>
+              <br>
+              Here, <strong><code>timerFactory</code></strong> is a higher order function that takes a callback function and returns another function with additional
+              <br>
+              functionality to track the time need to execute the function  added to it.
+              <br>
+              <p>
+
+              <code>
+                <pre>
+                  function timerFactory(callbackFunc) { // higher order function
+                    return function (...args) {
+                      const startTime = Date.now();
+                      callbackFunc(...args);
+                      const timeElapsed = (Date.now() - startTime) / 1000;
+                      console.log(`[INFO] function '${callbackFunc.name}' took ${timeElapsed}s`);
+                    };
+                  }
+                </pre>
+              </code>
+              <br>
+              We can now pass an function as a callback and <code>timerFactory</code> will return another function with the ability to track timeelapsed to it.
+              <br>
+              <code>
+                <pre>
+                  const sayHi = () => window.alert("Hi there!! developer");
+                  const sayHiTimmed = timerFactory(sayHi);
+                </pre>
+              </code>
+              </p>
+
+              <div>
+                <button id="higher-order-call">Call sayHiTimmed()</button>
+                <script src="higherOrderFunctions.js"></script>
+                <br>
+                <small><em>Check console for the time log.</em></small>
+              </div>
+              <br>
+            </p>
+          </li>
+        </ul>
+        <script src="firstClassFunctions.js"></script>
+      </section>
+
+      <section id="arrow-functions">
+        <h2>
+          <a href="#arrow-functions">#</a>
+          Arrow Functions
+        </h2>
+        <code>
+          <pre>
+            () => window.alert("Hi! from Arrow") // arrow funtion
+          </pre>
+        </code>
+        <ul>
+          <li id="arrow-vs-normal-functions">
+            <h3>
+              <a href="#arrow-vs-normal-functions">#</a>
+              Arrow vs Normal Functions
+            </h3>
+            <p>
+              Arrow functions donot have their own 'this' binding and bind the 
+              'this' scope to the lexical environment. 
+              <br>
+              This means arrow functions
+              bind 'this' to the scope in which they are defined. 
+              <br>
+              Where as in,
+              <br>
+              Normal functions the binding of 'this' is derived from the context
+              in which they are called. Hence, arrow functions are not suitable for object methods.
+              <br>
+              Examples follow to illustrate this.
+            </p>
+            <code>
+              <pre>
+          const obj = {
+            offset: 10,
+            getOffsetArrow: (val) => {
+              //       console.log( this, this.offset);
+              return this.offset + val;
+            },
+            getOffsetNormal: function (val) {
+              //       console.log(this, this.offset);
+              return this.offset + val;
+            },
+          };
+              </pre>
+            </code>
+            As arrow function dont have their own 'this' binding, the 'this'
+            inside the function points to the lexical scope i.e. the 'window'
+            object in this case. As offset is not defined in the window object
+            hence we get 'NaN' as result.
+            <br>
+            <br>
+            <code>
+              window.alert("Arrow function result : ", obj.getOffsetArrow(20));
+            </code>
+            <button id="arrow-function-result-1">See Result</button>
+            <br>
+            <br>
+            As normal functions get their 'this' binding from the context
+            in which they are called, thus as the 'getOffsetNormal' is called
+            on the 'obj' object, so the 'offset' refers to the offset of the
+            object.
+            <br>
+            <br>
+            <code>
+              window.alert("Normal function result : ", obj.getOffsetNormal(20));
+            </code>
+            <button id="normal-function-result-1">See Result</button>
+            <br>
+          </li>
+
+          <li id="arrow-vs-normal-functions-call-apply-bind">
+            <h3>
+              <a href="#arrow-vs-normal-functions-call-apply-bind">#</a>
+              Call, Apply & Bind are not suitable for Arrow funtions
+            </h3>
+            <p>
+              <strong>Call, Apply and Bind in Normal Functions</strong>
+              <br>
+              <br>
+              <code>
+                <pre>
+            const objToBind = {
+              name: "Person Object",
+            };
+            
+            window.name = "Window Object";
+            
+            function logger(x, y) {
+              console.log(this.name, x, y);
+            }
+            
+          </pre>
+        </code>
+        
+        with normal functions as the scope is defined by the context
+        'call', 'apply', 'bind' methods work as expected.
+            <br><br>
+            <code>
+              logger.call(objToBind, 1, 2);
+            </code>
+            <button id="call-normal">See result</button>
+            <br>
+            <br>
+            <code>
+              logger.apply(objToBind, [3, 4]);
+            </code>
+            <button id="apply-normal">See result</button>
+            <br>
+            <br>
+            <code>
+              const boundLogger = logger.bind(objToBind);
+              <br>
+              boundLogger(5, 6);
+            </code>
+            <button id="bind-normal">See result</button>
+            <br>
+            <p>In all the above invokcations <code>logger</code> will be called and the <strong>'this'</strong> will be bound to the <strong>'objToBind'</strong> object's <strong>'this'</strong> context</p>
+          <br>
+          </p>
+
+        <p>
+          <strong>Call, Apply and Bind in Arrow Functions</strong>
+          <code>
+            <pre>
+              const objToBind = {
+                name: "Person Object",
+              };
+
+              window.name = "Window Object";
+
+              const arrowLogger = (x, y) => {
+                window.alert(this.name + x + y);
+              };
+            </pre>
+          </code>
+          
+          with arrow functions as the 'this' is bound to the lexical scope,
+          <br>
+          thus the 'name' property is refering to the outer scope's 'name'
+          <br>
+          variable i.e. the window object in this case. And as we've defined
+          <br>
+          'name' on the window object earlier, hence that is used here.
+          <br>
+        </p>
+            <code>
+              arrowLogger.call(objToBind, 1, 2);
+            </code>
+            <button id="call-arrow">See Result</button>
+            <br><br>
+            <code>
+              arrowLogger.apply(objToBind, [3, 4]);
+            </code>
+            <button id="apply-arrow">See Result</button>
+            <br><br>
+            <code>
+              const boundLoggerArrow = arrowLogger.bind(objToBind);
+              boundLoggerArrow(5, 6);
+            </code>
+            <button id="bind-arrow">See Result</button>
+            <br><br>
+          </li>
+
+          <li id="arrow-functions-and-setTimeout">
+            <h3>
+              <a href="#arrow-functions-and-setTimeout">#</a>
+              Arrow functions and setTimeout
+            </h3>
+            <p>
+              Arrow functions are most useful incase of <code>setTimeout</code> methods
+              when the function is called in a different context.
+              <br>
+              Following example illustrates this.
+            </p>
+            <strong>Normal functions & setTimeout</strong>
+            <code>
+              <pre>
+        const mockService_Broken = {
+          data: 10,
+          getData: function () {
+            setTimeout(function () {
+              window.alert("Response : " + this.data);
+            }, 2000);
+          },
+        };
+              </pre>
+            </code>
+            <p>
+              <code> mockService_Broken.getData();</code>
+              <button id="setTimeout-normal">See Result</button>
+              <br>
+              <br>
+              Normal function bind their 'this' to the context in which they are called.
+              <br>
+              As timeouts are called in the global/window context, thus as 'data' is not
+              <br>
+              defined in global/window object, hence we get undefined.
+  
+            </p>
+            <br><br>
+            <strong>Arrow functions & setTimeout</strong>
+            <code>
+              <pre>
+        const mockService_Ok = {
+          data: 10,
+          getData: function () {
+            setTimeout(() => {
+              console.log("Response : " + this.data);
+            }, 2000);
+          },
+        };
+            </pre>
+          </code>
+          <p>
+              <code> mockService_Ok.getData();</code>
+              <button id="setTimeout-arrow">See Result</button>
+              <br>
+        <br>  Arrow function bind their 'this' to lexical environment in which they  
+        <br>  are declared(window/global object if there's not any) irrespective of 
+        <br>  the calling context. Thus, even if the setTimeout callback is called 
+        <br>  in the window context, the 'this' is bound to the context in which
+        <br>  they are declared. Thus, 'this.data' references the 'data' property
+        <br>  of the 'mockService_Ok' object
+          </p>
+          </li>
+        </ul>
+        <script src="arrowFunctions.js"></script>
+      </section>
+
+      <section id="debouncing-throttling">
+        <h2>
+          <a href="#debouncing-throttling">#</a>
+          Debouncing & Throttling in JS
+        </h2>
+        <p style="margin-left: 40px;">
+          This <a href="https://www.telerik.com/blogs/debouncing-and-throttling-in-javascript?msclkid=8d066004aff011ecbf83bb0fd308abd4" target="_blank">Tutorial blog</a> explains both these topics very clearly.    
+        </p>
+        
+        <ul>
+
+          <li id="debouncing">
+            <h3>
+              <a href="#debouncing">#</a>
+              Debouncing
+            </h3>
+            <br>
+            Debouncing is a technique used to limit the number of callbacks invoked due to an event listener. 
+            <br>
+            In debouncing we set up a timer when an event fires. And 
+            only after the timer is over, do we call the callback 
+            associated with the event. 
+            <br>
+            If while the timer is runing, the event fires again we
+            cancel the previous timer and the callback that was 
+            supposed to be invoked at the end of the timer is 
+            canceled and we start a new timer with a new callback 
+            altogether.
+            <br>
+            Following demo illustrates this clearly.
+            <br>
+            <br>
+            <div>
+              <input type="text" id="debounce-input">
+              <p>
+                Count without debounce:
+                <span id="no-debounce-count"></span>
+              </p>
+              <p>
+                Count with debounce:
+                <span id="debounce-count"></span>
+              </p>
+              <script src="debounce.js"></script>
+            </div>
+
+            <p>
+              Let's take a look at the code.
+              <code>
+                <pre>
+                let counter = 0;
+                let debounceCounter = 0;
+                let timeoutId;
+
+                function debounce() {
+                  counter++;
+                  count.textContent = counter;
+
+                  if (timeoutId) {
+                    clearTimeout(timeoutId);
+                  }
+
+                  timeoutId = setTimeout(function () {
+                    debounceCounter++;
+                    debounceCount.textContent = debounceCounter;
+                  }, 300);
+                }
+
+                document.getElementById("debounce-input").addEventListener("input", debounce);
+                </pre>
+              </code>
+              An input event listener is setup and counters are maintained for both <em>normal count</em> and <em>
+                count with debounce</em>. 
+              <br> 
+              The <em>normal count</em> increments on every 
+              input. But the <em>debounce count</em> increments
+              only after the use has stopped typing for 
+              <code>300ms</code>.  
+              <br> If user types something before the timer is 
+              over then, the previous timeout is canceled(and also the <em>callback</em> associated with it) and a
+              new timer is setup again.
+            </p>
+          </li>
+
+          <li id="throttling">
+            <h3>
+              <a href="#throttling">#</a>
+              Throttling
+            </h3>
+            <p>
+              Throttling is anothe way to limit the number of
+              times a callback is invoked due to an event. 
+              But this is different from <strong><em>debouncing</em></strong>.
+              <br>
+              In <em>throttling</em> we only invoke a callback 
+              associated with an event once in a given time frame 
+              no matter how many times the particular event is fired.
+              <br>
+              Following demo illustrates this.
+            </p>
+            <div>
+                Mouse over the grey area to trigger the
+                mouse over event.
+                <br>
+                <div id="mouse-hover-zone"></div>
+                <p>
+                  Count without throttle:
+                  <span id="no-throttle-count"></span>
+                </p>
+                <p>
+                  Count with throttle:
+                  <span id="throttle-count"></span>
+                </p>
+                <script src="throttle.js"></script>
+            </div>
+            <p>
+              Let's look at the code and understand what's going on.
+              <code>
+                <pre>
+              let nothrottlecounter = 0;
+              let throttleCounter = 0;
+
+              let thottleTimeoutId;
+
+              function throttle() {
+                nothrottlecounter++;
+                nothrottleCount.textContent = nothrottlecounter;
+                /**
+                * If there's a timmer already running then just return and
+                * don't touch the throttled function.
+                */
+                if (thottleTimeoutId) return;
+
+                thottleTimeoutId = setTimeout(function () {
+                  /**
+                  * else when the timer stops, we set the timer to 'undefined'
+                  * so that, the next time the event is fired the throttled
+                  * function gets invoked.
+                  */
+                  thottleTimeoutId = undefined;
+                  throttleCounter++;
+                  throttleCount.textContent = throttleCounter;
+                }, 250);
+              }
+              document
+                .getElementById("mouse-hover-zone")
+                .addEventListener("mousemove", throttle);
+                </pre>
+              </code>
+              When the mouse moves over the grey area, the callback is fired.
+              The <em>normal counter</em> increments
+         <br> every time the event is triggered. But the 
+              <em>throttled functions</em> is called only once in <code>250ms</code> interval.
+         <br> Even if the event is triggered during this time, 
+              the <em>throttled function</em> doesnot get invoked.
+            </p>
+          </li>
+        </ul>
+      </section>
+
+      <section id="promises">
+        <h2>
+          <a href="#promises">#</a>
+          Promises
+        </h2>
+
+        <div>
+        <p style="margin-left: 40px;">
+          Promises in javascript represent an eventual completion order failure of an asynchronous operation. 
+    <br>  These asynchronous operations are called blocking code like file read/write, DB and API operations
+    <br>  that block the main thread if they are called synchronously.
+    <br>  Promises have 3 states <strong><em>Pending</em></strong>, 
+          <strong><em>Resolved</em></strong> and <strong><em>Rejected</em></strong>
+          and they can live in either one of these states.
+        </p>
+
+        <div>
+          <strong>Creating a promise</strong>
+          <code>
+            <pre>
+              const promise = new Promise(function (resolve, reject) {
+                
+                if(/*operation Successful*/){
+                  //resolve the promise 
+                  resolve(/*pass arguments*/)
+                }
+
+                else{ //operation failed
+                  //reject the promise by specfying the error
+                  reject(new Error("mention cause of error here"))
+                }
+
+              });
+            </pre>
+          </code>
+
+          The <code>promise</code> variable holds a <code>Promise</code> object.
+          And the state of this promise is <em>Pending</em>. Once the operation is complete( maybe 
+          some DB operation or API call) we either <em>resolve</em> the promise if the operation was successful
+          or <em>reject</em> the promise if the operation failed.
+        </div>
+        <br>
+        <div>
+          <strong>Handling a Promise</strong>
+          <br>
+          A <code>Promise</code> will finally be either <em>Resolved</em> or <em>Rejected</em>. 
+          If a <code>Promise</code> is resolved then we chain a <code>.then</code> method and
+    <br>  pass a callback to the <code>.then</code> method than will be called after the promise is resolved. In case a <code>Promise</code> is rejected 
+    <br>  then we chain a <code>.catch</code> method and pass a error handling callback to the <code>.catch</code> method.
+        </div>  
+
+        <code>
+          <pre>
+            const resolverPromise = new Promise(function (resolve, reject) { // creating a promise object
+              setTimeout(() => {
+                resolve("SDE Mayukh");
+              }, 1000);
+            });
+          </pre>
+        </code>
+
+        <code>
+          resolverPromise.then((username) => window.alert("Welcome!! " + username));
+        </code>
+        <button id="resolve-promise">See result</button>
+        <br><br>
+
+        <code>
+          rejectorPromise.catch((err) => window.alert("Unable to fetch data. " + err));
+        </code>
+        <button id="reject-promise">See result</button>
+        <br><br>
+        </div>
+
+        <script src="promises.js"></script>
+      </section>
+
+    </main>
+
+    <footer>
+      <p>Good tutorials on the topics</p>
+      <ul>
+        <li>
+          <a href="https://www.toolsqa.com/javascript/closures-in-javascript/"
+            >Closures in JS</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://medium.com/@ian_grubb/first-class-functions-in-javascript-fe6caf61d179"
+            >First class functions in JS</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#Lexical_this"
+            >Arrow functions in JS MDN Docs</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://medium.com/launch-school/javascript-weekly-an-introduction-to-first-class-functions-9d069e6fb137#:~:text=First-class%20functions%20are%20a%20vital%20part%20of%20the,fact%2C%20JavaScript%20functions%20are%20themselves%20types%20of%20objects.?msclkid=e3672d5bb18311eca98c9fc37744686f"
+            >First class functions in JS Medium</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://medium.com/swlh/javascript-arrow-functions-vs-regular-functions-5ec4a9076796"
+            >Arrow functions vs Normal functions</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://stackoverflow.com/questions/28371982/what-does-this-refer-to-in-arrow-functions-in-es6"
+            >'this' in Arrow function Stackoverflow</a
+          >
+        </li>
+      </ul>
+    </footer>
+  </body>
+</html>
