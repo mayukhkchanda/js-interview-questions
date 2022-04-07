@@ -199,16 +199,17 @@ functionality. Avoid using Global variables.</em>
           First Class Functions
         </h2>
         <p>
-          <pre style="font-size: 1.175em;">
-        First class objects are called first class citizens. These objects have the following properties: 
-          > Be stored in a variable;
-          > Be passed as arguments to functions;
-          > Be returned by functions;
-          > Be stored in some data structure; and,
-          > Hold their own properties and methods.
-        Functions have all these properties and hence are called First class functions.
-        Below are demos of the same.
-          </pre>
+          
+        First class objects are called first class citizens. 
+        These objects have the following properties: 
+  <br>    > Be stored in a variable;
+  <br>    > Be passed as arguments to functions;
+  <br>    > Be returned by functions;
+  <br>    > Be stored in some data structure; and,
+  <br>    > Hold their own properties and methods.
+  <br>  Functions have all these properties and hence are called First class functions.
+  <br>  Below are demos of the same.
+          
         </p>
 
         <ul>
@@ -282,7 +283,8 @@ functionality. Avoid using Global variables.</em>
                   }
                   
                   // Function Expression:
-                  // func2(); // this is not and will throw a Error. cannot call func2 before initialisation
+                  // func2(); // this is not and will throw a Error. 
+                            //cannot call func2 before initialisation
                   
                   const /* ||let||var */ func2 = function () {
                     console.log("Function expression called");
@@ -668,25 +670,25 @@ functionality. Avoid using Global variables.</em>
               Let's take a look at the code.
               <code>
                 <pre>
-                let counter = 0;
-                let debounceCounter = 0;
-                let timeoutId;
+    let counter = 0;
+    let debounceCounter = 0;
+    let timeoutId;
 
-                function debounce() {
-                  counter++;
-                  count.textContent = counter;
+    function debounce() {
+      counter++;
+      count.textContent = counter;
 
-                  if (timeoutId) {
-                    clearTimeout(timeoutId);
-                  }
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
 
-                  timeoutId = setTimeout(function () {
-                    debounceCounter++;
-                    debounceCount.textContent = debounceCounter;
-                  }, 300);
-                }
+      timeoutId = setTimeout(function () {
+        debounceCounter++;
+        debounceCount.textContent = debounceCounter;
+      }, 300);
+    }
 
-                document.getElementById("debounce-input").addEventListener("input", debounce);
+    document.getElementById("debounce-input").addEventListener("input", debounce);
                 </pre>
               </code>
               An input event listener is setup and counters are maintained for both <em>normal count</em> and <em>
@@ -831,11 +833,13 @@ functionality. Avoid using Global variables.</em>
 
         <code>
           <pre>
-            const resolverPromise = new Promise(function (resolve, reject) { // creating a promise object
-              setTimeout(() => {
-                resolve("SDE Mayukh");
-              }, 1000);
-            });
+  // creating a promise object
+  const resolverPromise = new Promise(
+    function (resolve, reject) { 
+      setTimeout(() => {
+        resolve("SDE Mayukh");
+      }, 1000);
+  });
           </pre>
         </code>
 
@@ -857,8 +861,11 @@ functionality. Avoid using Global variables.</em>
 
     </main>
 
-    <footer>
-      <p>Good tutorials on the topics</p>
+    <footer id="tutorial-and-references">
+      <h3>
+        <a href="#tutorial-and-references">#</a>
+        Good tutorials on the topics
+      </h3>
       <ul>
         <li>
           <a href="https://www.toolsqa.com/javascript/closures-in-javascript/"
@@ -896,6 +903,18 @@ functionality. Avoid using Global variables.</em>
           >
         </li>
       </ul>
+
+      
     </footer>
+    <div id="follow-me">
+      <a href="https://github.com/mayukhkchanda" id="github">
+        <img src="./assets/github-logo.png" alt="Github logo" srcset="">
+        <p>Follow me on Github</p>
+        </a>
+        <a href="https://www.linkedin.com/in/mayukh-chanda-9a0080172/" id="linkedin">
+          <img src="./assets/linkedin-logo.png" alt="Github logo" srcset="">
+          <p>Follow me on Linkedin</p>
+        </a>
+    </div>
   </body>
 </html>
