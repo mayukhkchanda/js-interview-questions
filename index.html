@@ -32,21 +32,21 @@
           >
         </p>
         <p>
-          <code>
-            <pre>
+          <p id="code">
+            
             const CounterFactory = function() {
-              let counter = 0;
-              return {
-                getCount : () => counter,
-                increment : () => {counter++;},
-                decrement : () => {counter--;},
-              }
-            }
-            const counter = CounterFactory();
-            console.log(counter); 
-          </pre
-            >
-          </code>
+        <br>    let counter = 0;
+        <br>    return {
+        <br>      getCount : () => counter,
+        <br>      increment : () => {counter++;},
+        <br>      decrement : () => {counter--;},
+        <br>    }
+        <br>  }
+        <br>  const counter = CounterFactory();
+        <br>  console.log(counter); 
+        
+          </p >
+
           Here the object returned has functions that form closures with the
           reference to <code>counter</code> variable. Thus, whenever we call
           <code>increment</code> or <code>decrement</code> the
@@ -87,19 +87,18 @@ functionality. Avoid using Global variables.</em>
           functions
         </p>
         <p>
-          <code>
-            <pre>
+          <p id="code">
             function x(y){
-              console.log("X");
-              y();
-            }
-            function y(){
-              console.log("Y");
-            }
-            x(y);
-          </pre
-            >
-          </code>
+        <br>    console.log("X");
+        <br>    y();
+        <br>  }
+        <br>  function y(){
+        <br>    console.log("Y");
+        <br>  }
+        <br>  x(y);
+        <br>
+          </p >
+
           Calling <code>x(y)</code> would log <code>X</code> and
           <code>Y</code> to the console.
           <br />
@@ -149,34 +148,31 @@ functionality. Avoid using Global variables.</em>
 
         <p>
 
-          <code>
-            <pre>
-
-              function blocking() {
-                console.log("Start");
-                
-                setTimeout(() => {
-                  console.log("I was supposed to be called after 1s.")
-                  console.log("setTimeout Callback func");
-                }, 1000);
-                
-                console.log("End");
-                
-                //Blocking the Main Thread
-                console.log("Started Blocking the Main Thread");
-                let startDt = Date.now();
-                let endDt = Date.now();
-                
-                // till the endDt is 10s from the start time
-                // the loop keeps running on the main thread i.e. on the callstack
-                while (endDt < startDt + 10000) {
-                  endDt = Date.now();
-                }
-                console.log("Successfully blocked the main thread for 10 seconds");
-                console.log("Ended Blocking the Main Thread");
-              }
-            </pre>
-          </code>
+          <p id="code">
+          <br>  function blocking() {
+          <br>    console.log("Start");
+          <br>    
+          <br>    setTimeout(() => {
+          <br>      console.log("I was supposed to be called after 1s.")
+          <br>      console.log("setTimeout Callback func");
+          <br>    }, 1000);
+          <br>    
+          <br>    console.log("End");
+          <br>    
+          <br>    //Blocking the Main Thread
+          <br>    console.log("Started Blocking the Main Thread");
+          <br>    let startDt = Date.now();
+          <br>    let endDt = Date.now();
+          <br>    
+          <br>    // till the endDt is 10s from the start time
+          <br>    // the loop keeps running on the main thread i.e. on the callstack
+          <br>    while (endDt < startDt + 10000) {
+          <br>      endDt = Date.now();
+          <br>    }
+          <br>    console.log("Successfully blocked the main thread for 10 seconds");
+          <br>    console.log("Ended Blocking the Main Thread");
+          <br>  }
+          </p>
 
           <br> After calling the function, a timeout is registered to be executed after 1 second.
           <br> But we are runing a <code>while</code> loop on the main thread for 10s.  Thus,
@@ -221,21 +217,17 @@ functionality. Avoid using Global variables.</em>
             </h3>
             <p>
 
-              <code>
-                <pre>
-                  function greet(user) { //function declaration
-                    window.alert("Welcome! " + user);
-                  }
-                </pre>
-              </code>
+              <p id="code">
+        <br>    function greet(user) { //function declaration
+        <br>      window.alert("Welcome! " + user);
+        <br>    }
+              </p>
               <br>
               These function can also be store in variable.
 
-              <code>
-                <pre>
+              <p id="code">
                   const greetVar = greet; // using functions as variables
-                </pre>
-              </code>
+              </p>
               <em>Note that the function's reference is store in the <strong><code>greetVar</code></strong> variable</em>
             </p>
             
@@ -255,13 +247,11 @@ functionality. Avoid using Global variables.</em>
               <a href="#functions-expression">#</a>
               Function Expression
             </h3>
-            <code>
-              <pre>
-                const greetFuncVar = function (user) {
-                  window.alert("Welcome! " + user);
-                }
-              </pre>
-            </code>
+            <p id="code">
+          <br>const greetFuncVar = function (user) {
+          <br>  window.alert("Welcome! " + user);
+          <br>}
+            </p>
            
             <div>
 
@@ -272,25 +262,22 @@ functionality. Avoid using Global variables.</em>
                 Hence, <em>function statements</em> can be called before they are initialised
                 but <em> function expressions</em> cannot. 
               </p>
-              <code>
-                <pre>
-
-                  // Function Declaration/Statement:
-                  func(); // this is allowed
-                  
-                  function func() {
-                    console.log("Function statement called");
-                  }
-                  
-                  // Function Expression:
-                  // func2(); // this is not and will throw a Error. 
-                            //cannot call func2 before initialisation
-                  
-                  const /* ||let||var */ func2 = function () {
-                    console.log("Function expression called");
-                  };
-                </pre>
-              </code>
+              <p id="code">
+              <br> // Function Declaration/Statement:
+              <br> func(); // this is allowed
+              <br> 
+              <br> function func() {
+              <br>   console.log("Function statement called");
+              <br> }
+              <br> 
+              <br> // Function Expression:
+              <br> // func2(); // this is not and will throw a Error. 
+              <br>           //cannot call func2 before initialisation
+              <br> 
+              <br> const /* ||let||var */ func2 = function () {
+              <br>   console.log("Function expression called");
+              <br> };
+              </p>
             </div>
           </li>
 
@@ -300,13 +287,11 @@ functionality. Avoid using Global variables.</em>
               Anonymous Functions
             </h3>
             <p>
-              <code>
-                <pre>
-                  function (){ // unamed Anonymous  function 
-                    console.log("Anonymous funtion");
-                  }
-                </pre>
-              </code>
+              <p id="code">
+              <br>function (){ // unamed Anonymous  function 
+              <br>  console.log("Anonymous funtion");
+              <br>}
+              </p>
               
               <br>
               <strong>Note,</strong>
@@ -320,23 +305,21 @@ functionality. Avoid using Global variables.</em>
               Below is an example of <strong><em>Named Anonymous function</em></strong>.
               <br>
 
-              <code>
-                <pre>
-                  //Named anonymous function. xyz is created as a local variable 
-                  //and the is accessible inside the xyz function scope
-                  
-                  const abc = function xyz() {
-                    console.log("Named anonymous function");
-                    // these have access to their function
-                    console.log(xyz);
-                  };
-                  
-                  abc(); // this is allowed
-
-                  //outer function doesnot has access to this function.
-                  // xyz(); // hence this is not allowed
-                </pre>
-              </code>
+              <p id="code">
+            <br>      //Named anonymous function. xyz is created as a local variable 
+            <br>      //and the is accessible inside the xyz function scope
+            <br>      
+            <br>      const abc = function xyz() {
+            <br>        console.log("Named anonymous function");
+            <br>        // these have access to their function
+            <br>        console.log(xyz);
+            <br>      };
+            <br>      
+            <br>      abc(); // this is allowed
+            <br>        
+            <br>      //outer function doesnot has access to this function.
+            <br>      // xyz(); // hence this is not allowed
+              </p>
 
             </p>
           </li>
@@ -356,27 +339,23 @@ functionality. Avoid using Global variables.</em>
               <br>
               <p>
 
-              <code>
-                <pre>
-                  function timerFactory(callbackFunc) { // higher order function
-                    return function (...args) {
-                      const startTime = Date.now();
-                      callbackFunc(...args);
-                      const timeElapsed = (Date.now() - startTime) / 1000;
-                      console.log(`[INFO] function '${callbackFunc.name}' took ${timeElapsed}s`);
-                    };
-                  }
-                </pre>
-              </code>
+              <p id="code">
+              <br>  function timerFactory(callbackFunc) { // higher order function
+              <br>    return function (...args) {
+              <br>      const startTime = Date.now();
+              <br>      callbackFunc(...args);
+              <br>      const timeElapsed = (Date.now() - startTime) / 1000;
+              <br>      console.log(`[INFO] function '${callbackFunc.name}' took ${timeElapsed}s`);
+              <br>    };
+              <br>  }
+              </p>
               <br>
               We can now pass an function as a callback and <code>timerFactory</code> will return another function with the ability to track timeelapsed to it.
               <br>
-              <code>
-                <pre>
-                  const sayHi = () => window.alert("Hi there!! developer");
-                  const sayHiTimmed = timerFactory(sayHi);
-                </pre>
-              </code>
+              <p id="code">
+              <br>  const sayHi = () => window.alert("Hi there!! developer");
+              <br>  const sayHiTimmed = timerFactory(sayHi);
+              </p>
               </p>
 
               <div>
@@ -397,11 +376,9 @@ functionality. Avoid using Global variables.</em>
           <a href="#arrow-functions">#</a>
           Arrow Functions
         </h2>
-        <code>
-          <pre>
-            () => window.alert("Hi! from Arrow") // arrow funtion
-          </pre>
-        </code>
+        <p id="code">
+        <br> () => window.alert("Hi! from Arrow") // arrow funtion
+        </p>
         <ul>
           <li id="arrow-vs-normal-functions">
             <h3>
@@ -422,21 +399,19 @@ functionality. Avoid using Global variables.</em>
               <br>
               Examples follow to illustrate this.
             </p>
-            <code>
-              <pre>
-          const obj = {
-            offset: 10,
-            getOffsetArrow: (val) => {
-              //       console.log( this, this.offset);
-              return this.offset + val;
-            },
-            getOffsetNormal: function (val) {
-              //       console.log(this, this.offset);
-              return this.offset + val;
-            },
-          };
-              </pre>
-            </code>
+            <p id="code">
+        <br>  const obj = {
+        <br>    offset: 10,
+        <br>    getOffsetArrow: (val) => {
+        <br>      //       console.log( this, this.offset);
+        <br>      return this.offset + val;
+        <br>    },
+        <br>    getOffsetNormal: function (val) {
+        <br>      //       console.log(this, this.offset);
+        <br>      return this.offset + val;
+        <br>    },
+        <br>  };
+            </p>
             As arrow function dont have their own 'this' binding, the 'this'
             inside the function points to the lexical scope i.e. the 'window'
             object in this case. As offset is not defined in the window object
@@ -471,20 +446,17 @@ functionality. Avoid using Global variables.</em>
               <strong>Call, Apply and Bind in Normal Functions</strong>
               <br>
               <br>
-              <code>
-                <pre>
-            const objToBind = {
-              name: "Person Object",
-            };
-            
-            window.name = "Window Object";
-            
-            function logger(x, y) {
-              console.log(this.name, x, y);
-            }
-            
-          </pre>
-        </code>
+              <p id="code">
+        <br>  const objToBind = {
+        <br>    name: "Person Object",
+        <br>  };
+        <br>  
+        <br>  window.name = "Window Object";
+        <br>  
+        <br>  function logger(x, y) {
+        <br>    console.log(this.name, x, y);
+        <br>  }
+            </p>
         
         with normal functions as the scope is defined by the context
         'call', 'apply', 'bind' methods work as expected.
@@ -514,19 +486,17 @@ functionality. Avoid using Global variables.</em>
 
         <p>
           <strong>Call, Apply and Bind in Arrow Functions</strong>
-          <code>
-            <pre>
-              const objToBind = {
-                name: "Person Object",
-              };
-
-              window.name = "Window Object";
-
-              const arrowLogger = (x, y) => {
-                window.alert(this.name + x + y);
-              };
-            </pre>
-          </code>
+          <p id="code">
+          <br>  const objToBind = {
+          <br>    name: "Person Object",
+          <br>  };
+          <br>                                 
+          <br>  window.name = "Window Object";
+          <br>                                 
+          <br>  const arrowLogger = (x, y) => {
+          <br>    window.alert(this.name + x + y);
+          <br>  };
+          </p>
           
           with arrow functions as the 'this' is bound to the lexical scope,
           <br>
@@ -549,7 +519,7 @@ functionality. Avoid using Global variables.</em>
             <br><br>
             <code>
               const boundLoggerArrow = arrowLogger.bind(objToBind);
-              boundLoggerArrow(5, 6);
+        <br>  boundLoggerArrow(5, 6);
             </code>
             <button id="bind-arrow">See Result</button>
             <br><br>
@@ -567,18 +537,16 @@ functionality. Avoid using Global variables.</em>
               Following example illustrates this.
             </p>
             <strong>Normal functions & setTimeout</strong>
-            <code>
-              <pre>
-        const mockService_Broken = {
-          data: 10,
-          getData: function () {
-            setTimeout(function () {
-              window.alert("Response : " + this.data);
-            }, 2000);
-          },
-        };
-              </pre>
-            </code>
+            <p id="code">
+          <br>const mockService_Broken = {
+          <br>  data: 10,
+          <br>  getData: function () {
+          <br>    setTimeout(function () {
+          <br>      window.alert("Response : " + this.data);
+          <br>    }, 2000);
+          <br>  },
+          <br>};
+            </p>
             <p>
               <code> mockService_Broken.getData();</code>
               <button id="setTimeout-normal">See Result</button>
@@ -593,18 +561,16 @@ functionality. Avoid using Global variables.</em>
             </p>
             <br><br>
             <strong>Arrow functions & setTimeout</strong>
-            <code>
-              <pre>
-        const mockService_Ok = {
-          data: 10,
-          getData: function () {
-            setTimeout(() => {
-              console.log("Response : " + this.data);
-            }, 2000);
-          },
-        };
-            </pre>
-          </code>
+            <p id="code">
+              <br>const mockService_Ok = {
+              <br>  data: 10,
+              <br>  getData: function () {
+              <br>    setTimeout(() => {
+              <br>      console.log("Response : " + this.data);
+              <br>    }, 2000);
+              <br>  },
+              <br>};
+            </p>
           <p>
               <code> mockService_Ok.getData();</code>
               <button id="setTimeout-arrow">See Result</button>
@@ -668,29 +634,27 @@ functionality. Avoid using Global variables.</em>
 
             <p>
               Let's take a look at the code.
-              <code>
-                <pre>
-    let counter = 0;
-    let debounceCounter = 0;
-    let timeoutId;
-
-    function debounce() {
-      counter++;
-      count.textContent = counter;
-
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-
-      timeoutId = setTimeout(function () {
-        debounceCounter++;
-        debounceCount.textContent = debounceCounter;
-      }, 300);
-    }
-
-    document.getElementById("debounce-input").addEventListener("input", debounce);
-                </pre>
-              </code>
+              <p id="code">
+            <br>let counter = 0;
+            <br>let debounceCounter = 0;
+            <br>let timeoutId;
+            <br>                                      
+            <br>function debounce() {
+            <br>  counter++;
+            <br>  count.textContent = counter;
+            <br>                                             
+            <br>  if (timeoutId) {
+            <br>    clearTimeout(timeoutId);
+            <br>  }
+            <br>                                                 
+            <br>  timeoutId = setTimeout(function () {
+            <br>    debounceCounter++;
+            <br>    debounceCount.textContent = debounceCounter;
+            <br>  }, 300);
+            <br>}
+            <br>                                                                                                      
+            <br>document.getElementById("debounce-input").addEventListener("input", debounce);
+              </p>
               An input event listener is setup and counters are maintained for both <em>normal count</em> and <em>
                 count with debounce</em>. 
               <br> 
@@ -737,38 +701,36 @@ functionality. Avoid using Global variables.</em>
             </div>
             <p>
               Let's look at the code and understand what's going on.
-              <code>
-                <pre>
-              let nothrottlecounter = 0;
-              let throttleCounter = 0;
-
-              let thottleTimeoutId;
-
-              function throttle() {
-                nothrottlecounter++;
-                nothrottleCount.textContent = nothrottlecounter;
-                /**
-                * If there's a timmer already running then just return and
-                * don't touch the throttled function.
-                */
-                if (thottleTimeoutId) return;
-
-                thottleTimeoutId = setTimeout(function () {
-                  /**
-                  * else when the timer stops, we set the timer to 'undefined'
-                  * so that, the next time the event is fired the throttled
-                  * function gets invoked.
-                  */
-                  thottleTimeoutId = undefined;
-                  throttleCounter++;
-                  throttleCount.textContent = throttleCounter;
-                }, 250);
-              }
-              document
-                .getElementById("mouse-hover-zone")
-                .addEventListener("mousemove", throttle);
-                </pre>
-              </code>
+              <p id="code">
+            <br>let nothrottlecounter = 0;
+            <br>let throttleCounter = 0;
+            <br>                                         
+            <br>let thottleTimeoutId;
+            <br>                                       
+            <br>function throttle() {
+            <br>  nothrottlecounter++;
+            <br>  nothrottleCount.textContent = nothrottlecounter;
+            <br>  /**
+            <br>  * If there's a timmer already running then just return and
+            <br>  * don't touch the throttled function.
+            <br>  */
+            <br>  if (thottleTimeoutId) return;
+            <br>                                                  
+            <br>  thottleTimeoutId = setTimeout(function () {
+            <br>    /**
+            <br>    * else when the timer stops, we set the timer to 'undefined'
+            <br>    * so that, the next time the event is fired the throttled
+            <br>    * function gets invoked.
+            <br>    */
+            <br>    thottleTimeoutId = undefined;
+            <br>    throttleCounter++;
+            <br>    throttleCount.textContent = throttleCounter;
+            <br>  }, 250);
+            <br>}
+            <br>document
+            <br>  .getElementById("mouse-hover-zone")
+            <br>  .addEventListener("mousemove", throttle);
+              </p>
               When the mouse moves over the grey area, the callback is fired.
               The <em>normal counter</em> increments
          <br> every time the event is triggered. But the 
@@ -798,23 +760,21 @@ functionality. Avoid using Global variables.</em>
 
         <div>
           <strong>Creating a promise</strong>
-          <code>
-            <pre>
-              const promise = new Promise(function (resolve, reject) {
-                
-                if(/*operation Successful*/){
-                  //resolve the promise 
-                  resolve(/*pass arguments*/)
-                }
-
-                else{ //operation failed
-                  //reject the promise by specfying the error
-                  reject(new Error("mention cause of error here"))
-                }
-
-              });
-            </pre>
-          </code>
+          <p id="code">
+          <br>const promise = new Promise(function (resolve, reject) {
+          <br>  
+          <br>  if(/*operation Successful*/){
+          <br>    //resolve the promise 
+          <br>    resolve(/*pass arguments*/)
+          <br>  }
+          <br>                                             
+          <br>  else{ //operation failed
+          <br>    //reject the promise by specfying the error
+          <br>    reject(new Error("mention cause of error here"))
+          <br>  }
+          <br>                                  
+          <br>});
+          </p>
 
           The <code>promise</code> variable holds a <code>Promise</code> object.
           And the state of this promise is <em>Pending</em>. Once the operation is complete( maybe 
@@ -831,17 +791,15 @@ functionality. Avoid using Global variables.</em>
     <br>  then we chain a <code>.catch</code> method and pass a error handling callback to the <code>.catch</code> method.
         </div>  
 
-        <code>
-          <pre>
-  // creating a promise object
-  const resolverPromise = new Promise(
-    function (resolve, reject) { 
-      setTimeout(() => {
-        resolve("SDE Mayukh");
-      }, 1000);
-  });
-          </pre>
-        </code>
+        <p id="code">
+      <br>  // creating a promise object
+      <br>  const resolverPromise = new Promise(
+      <br>    function (resolve, reject) { 
+      <br>      setTimeout(() => {
+      <br>        resolve("SDE Mayukh");
+      <br>      }, 1000);
+      <br>  });
+        </p>
 
         <code>
           resolverPromise.then((username) => window.alert("Welcome!! " + username));

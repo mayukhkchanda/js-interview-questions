@@ -37,7 +37,7 @@ header > p {
 }
 
 main {
-  margin: 30px;
+  margin-left: 30px;
 }
 
 section > ul {
@@ -116,4 +116,28 @@ div#follow-me a p {
   font-size: 1.04em;
   font-weight: 600;
   color: #fafafa;
+}
+
+p#code {
+  font-weight: 600;
+  margin: 2em 0px;
+}
+
+@media screen and (max-width: 375px) {
+  main {
+    margin-left: 10px;
+  }
+
+  section > ul {
+    margin-left: 10px;
+  }
+  section > div {
+    margin-left: 10px;
+  }
+  footer {
+    margin: 10px;
+  }
+  footer > ul {
+    margin-left: 10px;
+  }
 }
